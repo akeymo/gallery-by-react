@@ -1,7 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
-var CleanWebpackPlugin = require('clean-webpack-plugin'); //清楚build目录重复的文件
-var ExtractTextPlugin = require('extract-text-webpack-plugin'); //分离css文件
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
 	entry: [
@@ -12,7 +11,7 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, 'build'),
 		filename: 'bundle.js',
-		publicPath: './build/'
+		publicPath: '/build/'
 	},
 
 	devtool: 'eval-source-map',
@@ -54,7 +53,7 @@ module.exports = {
 	devServer: {
 		hot: true,
 		port: 8000,
-		publicPath: './build/',
+		publicPath: '/build/',
 		stats: {
 			colors: true
 		}
@@ -62,11 +61,6 @@ module.exports = {
 
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
-		new ExtractTextPlugin({
-			filename: '[name].[hash].css',
-			disable: false,
-			allChunks: true,
-		}),
-		new CleanWebpackPlugin(['build'])
-	],
+		new ExtractTextPlugin('[name].[hash].css'),
+	]
 }
