@@ -9,6 +9,6 @@
 git clone git@github.com:akeymo/gallery-by-react.git
 
 ## 运行
-npm install
+npm install  
 npm run start
 
