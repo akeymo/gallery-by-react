@@ -30,11 +30,24 @@ let getAngleRandom = () => {
 class ImgFigure extends React.Component{
 	constructor(props){
 		super(props);
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleClick(e){
+
+		this.props.inverse();
+
+		e.stopPropagation();
+		e.preventDefault();
 	}
 
 	render(){
 
 		let styleObj = {};
+		let imgFigureClassName = 'img-figure';
+
+		imgFigureClassName += this.props.arrange.isInverse ? ' is-inverse' : '';
+
 		if(this.props.arrange.pos){
 			styleObj = this.props.arrange.pos
 		}
@@ -46,10 +59,15 @@ class ImgFigure extends React.Component{
 		}
 
 		return(
-			<figure className="img-figure" style={styleObj}>
+			<figure className={imgFigureClassName} style={styleObj} onClick={this.handleClick}>
 				<img src={this.props.data.imageURL} alt={this.props.data.title}/>
 				<figcaption>
 					<h2 className="img-title">{this.props.data.title}</h2>
+					<div className="img-back" onClick={this.handleClick}>
+						<p>
+							{this.props.data.title}
+						</p>
+					</div>
 				</figcaption>
 			</figure>
 		)
@@ -140,6 +158,22 @@ class GalleryByReactApp extends React.Component {
 		})
 	}
 
+	/*
+	 * 点击翻转
+	 * @param 需要翻转的图片的index
+	 * return 闭包函数
+	 */
+	inverse(index){
+		return () => {
+			let imgsArrangeArr = this.state.imgsArrangeArr;
+
+			imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse;
+			this.setState({
+				imgsArrangeArr: imgsArrangeArr
+			})
+		}
+	}
+
 	componentDidMount(){
 		// 舞台大小
 		let stageDom = ReactDOM.findDOMNode(this.refs.stage);
@@ -189,10 +223,11 @@ class GalleryByReactApp extends React.Component {
 						top:0
 					},
 					rotate: 0,
+					isInverse: false,	//正面为false，反面为true
 				}
 			}
 
-			ImgFigures.push(<ImgFigure data={value} key={index} ref={`imgFigure${index}`} arrange={this.state.imgsArrangeArr[index]}/>);
+			ImgFigures.push(<ImgFigure data={value} key={index} ref={`imgFigure${index}`} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)}/>);
 		});
 
 		return (
