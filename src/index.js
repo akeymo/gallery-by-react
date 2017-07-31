@@ -22,6 +22,11 @@ imgDatas = ((imgDatasArr) => {
 // 获取区间内的随机值
 let getRangeRandom = (low, high) => Math.floor(Math.random()*(high - low) + low);
 
+// 获取正负0-30度随机角度值
+let getAngleRandom = () => {
+	return (Math.random() > 0.5 ? '' : '-') + Math.ceil(Math.random()*30);
+}
+
 class ImgFigure extends React.Component{
 	constructor(props){
 		super(props);
@@ -32,6 +37,12 @@ class ImgFigure extends React.Component{
 		let styleObj = {};
 		if(this.props.arrange.pos){
 			styleObj = this.props.arrange.pos
+		}
+
+		if(this.props.arrange.rotate){
+			(['Webkit','Moz','ms','']).forEach((value) => {
+				styleObj[value + 'Transform'] = 'rotate(' + this.props.arrange.rotate + 'deg)';
+			})
 		}
 
 		return(
@@ -86,13 +97,17 @@ class GalleryByReactApp extends React.Component {
 
 		// 居中图片的位置信息
 		imgsArrangeCenterArr[0].pos = this.constant.centerPos;
+		imgsArrangeCenterArr[0].rotate = 0;
 		// 布局上侧的图片
 		topImgSpliceIndex = Math.floor(Math.random() * (imgsArrangeArr.length - topImgNum));
 		imgsArrangeTopArr = imgsArrangeArr.splice(topImgSpliceIndex,topImgNum);
 		imgsArrangeTopArr.forEach((value, index) => {
-			imgsArrangeTopArr[index].pos = {
-				left: getRangeRandom(this.constant.vPosRange.x[0],this.constant.vPosRange.x[1]),
-				top: getRangeRandom(this.constant.vPosRange.topY[0], this.constant.vPosRange.topY[1])
+			imgsArrangeTopArr[index] = {
+				pos:{
+					left: getRangeRandom(this.constant.vPosRange.x[0],this.constant.vPosRange.x[1]),
+					top: getRangeRandom(this.constant.vPosRange.topY[0], this.constant.vPosRange.topY[1])
+				},
+				rotate: getAngleRandom()
 			}
 		});
 		// 布局两侧图片
@@ -104,9 +119,13 @@ class GalleryByReactApp extends React.Component {
 				hPosRangeLOrR = this.constant.hPosRange.rigthSecX
 			}
 
-			imgsArrangeArr[i].pos = {
-				left: getRangeRandom(hPosRangeLOrR[0],hPosRangeLOrR[1]),
-				top: getRangeRandom(this.constant.hPosRange.y[0],this.constant.hPosRange.y[1])
+			imgsArrangeArr[i] = {
+				pos: {
+					left: getRangeRandom(hPosRangeLOrR[0],hPosRangeLOrR[1]),
+					top: getRangeRandom(this.constant.hPosRange.y[0],this.constant.hPosRange.y[1])
+				},
+				rotate: getAngleRandom()
+
 			}
 		}
 
@@ -168,7 +187,8 @@ class GalleryByReactApp extends React.Component {
 					pos:{
 						left:0,
 						top:0
-					}
+					},
+					rotate: 0,
 				}
 			}
 
