@@ -5,10 +5,10 @@
 
 整个项目使用webpack+react+es6
 
-# 下载
+## 下载
 git clone git@github.com:akeymo/gallery-by-react.git
 
-# 运行
+## 运行
 npm install
 npm run start
 
