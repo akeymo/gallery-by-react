@@ -14,5 +14,6 @@ git clone git@github.com:akeymo/gallery-by-react.git
 ```
 npm install  
 npm run start
+http://localhost:8000/
 ```
 
